@@ -28,12 +28,21 @@ def login_required(f):
     return function
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    if 'username' in session:
-        return redirect(url_for('update'))
-    session['type'] = 'unknown'
-    return render_template('home.html')
+	if request.method == 'GET':
+	    if 'username' in session:
+	        return redirect(url_for('update'))
+	    session['type'] = 'unknown'
+	    return render_template('home.html')
+	else:
+		cur.execute("SELECT * FROM ROOT")
+		auth = cur.fetchone()
+		user_input = (request.form['username'], request.form['password'])
+		if user_input == auth:
+			return redirect(url_for('update'))
+		else:
+			return redirect(url_for('home'))
 
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -42,6 +51,13 @@ def update():
 	return render_template('update.html')
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('username', None)
+    session['type'] = 'unknown'
+    return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
 	app.run(host="127.0.0.1", port=6666, debug=True)	
-	
