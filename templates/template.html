@@ -6,17 +6,22 @@
 	</head>
 	<body>
 		<header>
-			<div class="navbar navbar-inverse">
-				<div class="nav-inner">
+			<div class="navbar navbar-fixed-top">
+				<div class="nav-inner navbar-left">
 					<a class="navbar-brand" href="/">ksupdates</a>
 				</div>
+				{% if logged_in %}
+				<div class="nav-inner navbar-right">
+					<a class="navbar-brand" href="/logout">Logout</a>
+				</div>
+				{% endif %}
 			</div>
 		</header>
 		<div class="container">
 			{% block content %}
 			{% endblock %}
 		</div>
-		<div class="navbar navbar-fixed-bottom" role="navigation" style="height: 2em">
+		<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation" style="height: 2em">
 			<div class="nav-inner">
 				<a class="navbar-brand" href="https://kuruksastra.in">Kuruksastra '15</a>
 			</div>

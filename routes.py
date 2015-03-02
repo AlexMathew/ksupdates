@@ -44,7 +44,7 @@ def home():
 	    if 'username' in session:
 	        return redirect(url_for('update'))
 	    session['type'] = 'unknown'
-	    return render_template('home.html')
+	    return render_template('home.html', logged_in=False)
 	else:
 		cur.execute("SELECT * FROM ROOT")
 		auth = cur.fetchone()
@@ -59,7 +59,7 @@ def home():
 @login_required
 @connectDB
 def update():
-	return render_template('update.html')
+	return render_template('update.html', logged_in=True)
 
 
 @app.route('/logout')
