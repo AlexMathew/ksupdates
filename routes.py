@@ -39,6 +39,7 @@ def login_required(f):
 
 
 @app.route('/', methods=['GET', 'POST'])
+@connectDB
 def home():
 	if request.method == 'GET':
 	    if 'username' in session:
@@ -50,6 +51,7 @@ def home():
 		auth = cur.fetchone()
 		user_input = (request.form['username'], request.form['password'])
 		if user_input == auth:
+			session['username'] = request.form['username']
 			return redirect(url_for('update'))
 		else:
 			return redirect(url_for('home'))

@@ -1,4 +1,12 @@
 {% extends "template.html" %}
 {% block content %}
-
+<form action="{{ url_for('home') }}" method=post>
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	</div>
+	<div class="input-group">
+		<input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+	</div>
+	<button type="button" class="btn btn-default btn-lg">Go!</button>
+</form>
 {% endblock %}
