@@ -1,8 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 import os
 import psycopg2
 from functools import wraps
 import urlparse
+import time
 
 app = Flask(__name__)
 app.secret_key = os.environ['SECRET_KEY']
@@ -61,7 +62,22 @@ def home():
 @login_required
 @connectDB
 def update():
-	return render_template('update.html', logged_in=True)
+	if request.method == 'GET':
+        return render_template('update.html', logged_in=True)
+    else:
+        cluster = request.form['cluster']
+        announcement = request.form['announcement']
+        timestamp = int(time.time())
+        try:
+            cur.execute("INSERT INTO ANNOUNCEMENTS (CLUSTER, ANNOUNCEMENT, TIME) VALUES \
+                        (%s, %s, %s)", (cluster, announcement, timestamp))
+            flash('The update has been posted.')
+            error = " "
+        except:
+            flash('ERROR ! The update was NOT posted.')
+            error = " alert-danger"
+        finally:
+            return render_template('update.html', logged_in=True, error=error)
 
 
 @app.route('/logout')
