@@ -1,4 +1,32 @@
 {% extends "template.html" %}
 {% block content %}
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert {{ error }}">
+  	{{ messages[0] }}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<form action="{{ url_for('update') }}" method=post>
+	<div class="input-group">
+		<span class="input-group-addon">Cluster</span>
+		<label class="radio-inline"><input type="radio" name="cluster" value="MEDIA">Media</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="THESPIAN">Thespian</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="ENGLISH LITS">English Lits</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="HINDI LITS">Hindi Lits</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="TAMIL LITS">Tamil Lits</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="TELUGU LITS">Telugu Lits</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="EASTERN DANCE">Eastern Dance</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="WESTERN DANCE">Western Dance</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="MUSIC">Music</label>
+		<label class="radio-inline"><input type="radio" name="cluster" value="ARTS">Arts</label>
+	</div>
+	<div class="input-group">
+		<textarea name="announcement" class="form-control" placeholder="Announcement">
+	</div>
+	<button type="button" class="btn btn-default btn-lg">Post update</button>
+</form>
+
 {% endblock %}
