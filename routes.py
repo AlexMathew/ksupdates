@@ -62,7 +62,7 @@ def home():
 @login_required
 @connectDB
 def update():
-	if request.method == 'GET':
+    if request.method == 'GET':
         return render_template('update.html', logged_in=True)
     else:
         cluster = request.form['cluster']
