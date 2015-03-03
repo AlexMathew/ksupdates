@@ -41,7 +41,7 @@ def login_required(f):
 
 @app.route('/', methods=['GET', 'POST'])
 @connectDB
-def home():
+def home(cur):
 	if request.method == 'GET':
 	    if 'username' in session:
 	        return redirect(url_for('update'))
@@ -61,7 +61,7 @@ def home():
 @app.route('/update', methods=['GET', 'POST'])
 @login_required
 @connectDB
-def update():
+def update(cur):
     if request.method == 'GET':
         return render_template('update.html', logged_in=True)
     else:
