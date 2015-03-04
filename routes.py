@@ -74,12 +74,10 @@ def update(cur):
             cur.execute("INSERT INTO ANNOUNCEMENTS (CLUSTER, ANNOUNCEMENT, TIME) VALUES \
                         (%s, %s, %s)", (cluster, announcement, timestamp))
             flash('The update has been posted.')
-            error = " "
         except:
             flash('ERROR ! The update was NOT posted.')
-            error = " alert-danger"
         finally:
-            return render_template('update.html', logged_in=True, error=error)
+            return redirect(url_for('update'))
 
 
 @app.route('/logout')
