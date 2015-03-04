@@ -4,7 +4,7 @@ import os
 import psycopg2
 from functools import wraps
 import urlparse
-import time
+import datetime
 
 app = Flask(__name__)
 app.secret_key = os.environ['SECRET_KEY']
@@ -68,7 +68,7 @@ def update(cur):
     else:
         cluster = request.form['cluster']
         announcement = request.form['announcement']
-        timestamp = int(time.time())
+        timestamp = datetime.datetime.now()
         try:
             cur.execute("INSERT INTO ANNOUNCEMENTS (CLUSTER, ANNOUNCEMENT, TIME) VALUES \
                         (%s, %s, %s)", (cluster, announcement, timestamp))
