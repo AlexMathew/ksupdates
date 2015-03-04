@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session,\
     flash, jsonify
+from werkzeug.contrib.atom import AtomFeed
 import os
 import psycopg2
 from functools import wraps
@@ -87,6 +88,25 @@ def logout():
     session.pop('username', None)
     session['type'] = 'unknown'
     return redirect(url_for('home'))
+
+
+@app.route('/recent.atom')
+@connectDB
+def recent_feed(cur):
+    feed = AtomFeed('Recent announcements', 
+                    feed_url=request.url,
+                    url=request.url_root)
+    cur.execute("SELECT * FROM ANNOUNCEMENTS ORDER BY TIME DESC LIMIT 50")
+    announcements = cur.fetchall()
+    for i, announcement in enumerate(announcements):
+        feed.add(
+            "ANNOUNCEMENT " + str(i),
+            unicode(announcement[0] + announcement[1]),
+            author="KS",
+            url=request.url,
+            updated=announcement[2]
+            )
+    return feed.get_response()
 
 
 @app.route('/api/count', methods=['GET'])
