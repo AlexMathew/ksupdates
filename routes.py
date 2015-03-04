@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session,\
+    flash, jsonify
 import os
 import psycopg2
 from functools import wraps
@@ -86,6 +87,14 @@ def logout():
     session.pop('username', None)
     session['type'] = 'unknown'
     return redirect(url_for('home'))
+
+
+@app.route('/api/count', methods=['GET'])
+@connectDB
+def count(cur):
+    cur.execute("SELECT COUNT(*) FROM ANNOUNCEMENTS")
+    count = cur.fetchone()[0]
+    return jsonify({'count': count})
 
 
 if __name__ == '__main__':
