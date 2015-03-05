@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session,\
-    flash, jsonify
+    flash, jsonify, make_response
 from werkzeug.contrib.atom import AtomFeed
 import os
 import psycopg2
@@ -98,7 +98,7 @@ def recent_feed(cur):
     announcements = cur.fetchall()
     for i, announcement in enumerate(announcements):
         feed.add(
-            "ANNOUNCEMENT " + str(i + 1),
+            "ANNOUNCEMENT",
             unicode(announcement[0].strip() + ': ' + announcement[1]),
             author="KS",
             url=request.url,
@@ -113,6 +113,26 @@ def count(cur):
     cur.execute("SELECT COUNT(*) FROM ANNOUNCEMENTS")
     count = cur.fetchone()[0]
     return jsonify({'count': count})
+
+
+@app.route('/api/announcements/<int:count>', methods=['GET'])
+@connectDB
+def get_announcements(cur, count):
+    cur.execute("SELECT * FROM ANNOUNCEMENTS ORDER BY TIME LIMIT " + str(count))
+    announcements = cur.fetchall()
+    result = {'details': []}
+    for announcement in announcements:
+        result['details'].append({
+            'cluster': announcement[0],
+            'announcement': announcement[1],
+            'time': announcement[2]
+            })
+    return jsonify(result)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == '__main__':
