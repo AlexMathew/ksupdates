@@ -98,8 +98,8 @@ def recent_feed(cur):
     announcements = cur.fetchall()
     for i, announcement in enumerate(announcements):
         feed.add(
-            "ANNOUNCEMENT " + str(i),
-            unicode(announcement[0] + announcement[1]),
+            "ANNOUNCEMENT " + str(i + 1),
+            unicode(announcement[0].strip() + ': ' + announcement[1]),
             author="KS",
             url=request.url,
             updated=announcement[2]
