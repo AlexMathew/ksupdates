@@ -118,10 +118,10 @@ def count(cur):
 @app.route('/api/announcements/<int:count>', methods=['GET'])
 @connectDB
 def get_announcements(cur, count):
-    cur.execute("SELECT * FROM ANNOUNCEMENTS ORDER BY TIME DESC LIMIT " + count)
+    cur.execute("SELECT * FROM ANNOUNCEMENTS ORDER BY TIME DESC LIMIT " + str(count))
     announcements = cur.fetchall()
     result = {'details': []}
-    for announcement in reverse(announcements):
+    for announcement in reversed(announcements):
         result['details'].append({
             'cluster': announcement[0],
             'announcement': announcement[1],
