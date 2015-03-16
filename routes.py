@@ -80,6 +80,16 @@ def update(cur):
             return redirect(url_for('update'))
 
 
+@app.route('/delete', methods=['GET', 'POST'])
+@login_required
+@connectDB
+def delete(cur):
+    if request.method == 'GET':
+        return render_template('delete.html', logged_in=True)
+    else:
+        return redirect(url_for('delete'))
+
+
 @app.route('/logout')
 @login_required
 def logout():
