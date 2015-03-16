@@ -85,8 +85,11 @@ def update(cur):
 @connectDB
 def delete(cur):
     if request.method == 'GET':
-        return render_template('delete.html', logged_in=True)
+        cur.execute("SELECT * FROM ANNOUNCEMENTS ORDER BY TIME DESC")
+        announcements = cur.fetchall()
+        return render_template('delete.html', announcements = announcements, logged_in=True)
     else:
+        print request.form['announcements']
         return redirect(url_for('delete'))
 
 
