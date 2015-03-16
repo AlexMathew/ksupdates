@@ -1,6 +1,10 @@
 {% extends "template.html" %}
 {% block content %}
 
+<div class="page-header">
+  <h1>Delete announcements</h1>
+</div>
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
   <div class="alert">
@@ -19,7 +23,7 @@
 	  </div>
 	</div>
 	{% endfor %}
-	<button class="button">Delete updates</button>
+	<button class="button">Delete</button>
 </form>
 
 {% endblock %}

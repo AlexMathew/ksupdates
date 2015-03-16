@@ -1,6 +1,10 @@
 {% extends "template.html" %}
 {% block content %}
 
+<div class="page-header">
+  <h1>Add announcements</h1>
+</div>
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
   <div class="alert">
