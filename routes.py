@@ -89,8 +89,16 @@ def delete(cur):
         announcements = cur.fetchall()
         return render_template('delete.html', announcements = announcements, logged_in=True)
     else:
-        print request.form['announcements']
-        return redirect(url_for('delete'))
+        try:
+            to_delete_str = request.form.getlist('announcements')
+            to_delete = [datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f') 
+                        for date in to_delete_str]
+            cur.execute("DELETE FROM ANNOUNCEMENTS WHERE TIME = ANY(%s);", (to_delete,))
+            flash('The updates were deleted.')
+        except:
+            flash('ERROR ! The updates were NOT deleted.')
+        finally:
+            return redirect(url_for('delete'))
 
 
 @app.route('/logout')
